@@ -3,7 +3,7 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>个人理财系统登录界面</title>
+    <title>登录-数据服务</title>
     <!-- 引入bootstrap样式 -->
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <!--图标库-->
@@ -54,7 +54,7 @@
     <div class="lear-login">
         <div class="login-center1">
             <div class="login-header text-center">
-                <h1>理财应用</h1>
+                <h1>数据服务</h1>
             </div>
             <form>
                 <div class="form-group has-feedback feedback-left">
@@ -151,10 +151,10 @@
             return false;
         } else {
             $.ajax({
-                url: "/login/loginVerifyUsername/"+username,
-                type: "GET",
+                url: "/auth/login/"+username,
+                type: "POST",
                 success: function (result) {
-                    if (result.code === 200) {
+                    if (result.code !== 200) {
                         show_validate_msg("#username", "error",
                             "用户名不存在");
                         $("#login_btn")
@@ -202,19 +202,20 @@
 
         if (verifyUsername() && verifyCaptcha()) {
             var pwd = $("#password").val();
-            $("#password").val($.md5(pwd));
-            console.log($("#password").val())
+            // $("#password").val($.md5(pwd));
+            // console.log($("#password").val())
             $.ajax({
-                url: "/login/verifyLogin",
-                type: "GET",
+                url: "/auth/verify",
+                type: "POST",
                 data: {
                     "username": $("#username").val(),
-                    "password": $("#password").val()
+                    "password": $.md5(pwd)
                 },
                 success: function (result) {
-                    if (result.code === 100) {
+                    if (result.code === 200) {
                         var url = result.extend.url;
                         //alert(url);
+                        sessionStorage.setItem('token', result.data.token);
                         location.href = url;
                     } else {
                         show_validate_msg("#password", "error",

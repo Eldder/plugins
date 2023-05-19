@@ -116,10 +116,11 @@
 	 * doesn't provide a name. Default: 'file'.
 	 * @ param {string} tableNameDataAttribute - The identifier of
 	 * the name of the table as a data-attribute. Default: 'excel-name'
-	 * results to `<table data-excel-name="Another table">...</table>`.
+	 * results to `<table datdefaultFileNamea-excel-name="Another table">...</table>`.
 	 */
 	var defaultOptions = {
 	  defaultFileName: 'file',
+	  exclude: ".noExl", // 不是xls格式： 只有加在table tr 或 td 上class 有效  xls格式;任意
 	  tableNameDataAttribute: 'excel-name',
 
 	  /**
@@ -222,7 +223,7 @@
 	        throw new Error('Element must be a table');
 	      }
 
-	      return (0, _dataToWorksheet2.default)((0, _tableToData2.default)(table), typeHandlers);
+	      return (0, _dataToWorksheet2.default)((0, _tableToData2.default)(table, this), typeHandlers);
 	    }
 
 	    /**
@@ -2295,17 +2296,17 @@
 	 * @param {HTMLTableElment} table - The table.
 	 * @returns { { cells: Array, ranges: Array } } - The table object.
 	 */
-	function tableToData(table) {
+	function tableToData(table, options) {
+	window.exclude = options.exclude;
 	  var cells = [];
 	  var ranges = [];
-
 	  // iterate over all rows
 	  (0, _from2.default)(table.querySelectorAll('tr')).forEach(function (row, rowIndex) {
 	    cells.push([]);
 
 	    // iterate over all cells in the row
 	    (0, _from2.default)(row.querySelectorAll('td, th')).filter(function (cell) {
-	      return cell.style.display !== 'none';
+	      return cell.style.display !== 'none' && (cell.className + "").indexOf(window.exclude) < 0 ;
 	    }).forEach(function (cell) {
 	      ranges.forEach(function (range) {
 	        if ( // we are in a rowspan (already saved in ranges)
