@@ -11,7 +11,8 @@
 .lt-tr .list-box {
     width: 240px;
     height: 100%;
-    min-height: 300px
+    min-height: 300px;
+    max-height: 2400px;
 }
 
 .lt-tr .left {
