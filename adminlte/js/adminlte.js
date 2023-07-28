@@ -1218,6 +1218,7 @@
   var CLASS_NAME_FULLSCREEN_MODE = 'iframe-mode-fullscreen';
   var Default$7 = {
     onTabClick: function onTabClick(item) {
+      debugger
       return item;
     },
     onTabChanged: function onTabChanged(item) {
@@ -1230,8 +1231,8 @@
     autoItemActive: true,
     autoShowNewTab: true,
     autoDarkMode: false,
-    allowDuplicates: false,
-    allowReload: true,
+    allowDuplicates: true,
+    allowReload: false,
     loadingScreen: true,
     useNavbarItems: false,
     scrollOffset: 40,
